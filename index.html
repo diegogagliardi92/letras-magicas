@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>¡A Jugar y Aprender a Leer!</title>
+<link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🌟</text></svg>">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@500;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<div id="confetti-layer" aria-hidden="true"></div>
+
+<!-- PANTALLA DE INICIO -->
+<main id="pantalla-inicio" class="pantalla">
+  <div class="titulo-wrap">
+    <h1 class="titulo-juego">
+      <span>¡</span><span>A</span><span>&nbsp;</span><span>J</span><span>U</span><span>G</span><span>A</span><span>R</span>
+    </h1>
+    <p class="subtitulo">APRENDÉ A LEER Y ESCRIBIR ✏️📖</p>
+  </div>
+  <div class="mascota">📚✨</div>
+
+  <div id="zona-nombre" class="zona-nombre">
+    <input id="input-nombre" class="input-nombre" type="text" maxlength="14" autocomplete="off" placeholder="¿CÓMO TE LLAMÁS?">
+  </div>
+  <p id="saludo-nombre" class="saludo-nombre" hidden></p>
+  <button id="btn-cambiar-nombre" class="link-chico" hidden>CAMBIAR NOMBRE</button>
+
+  <button id="btn-jugar" class="boton-grande boton-primario">JUGAR</button>
+</main>
+
+<!-- PANTALLA DE DIFICULTAD -->
+<main id="pantalla-dificultad" class="pantalla" hidden>
+  <h1 class="titulo-menu">¿QUÉ TAN DIFÍCIL?</h1>
+  <div class="menu-opciones">
+    <button id="btn-dif-facil" class="boton-grande boton-primario">🌱 FÁCIL</button>
+    <button id="btn-dif-medio" class="boton-grande boton-secundario">🌟 MEDIO</button>
+    <button id="btn-dif-dificil" class="boton-grande boton-terciario">🔥 DIFÍCIL</button>
+  </div>
+  <button id="btn-volver-inicio" class="link-chico">◀ VOLVER</button>
+</main>
+
+<!-- PANTALLA DE MENÚ (elegir modo) -->
+<main id="pantalla-menu" class="pantalla" hidden>
+  <p class="badge-dificultad" id="badge-dificultad"></p>
+  <h1 class="titulo-menu">¿QUÉ QUERÉS JUGAR?</h1>
+  <div class="menu-opciones">
+    <button id="btn-modo-escribir" class="boton-grande boton-primario">✏️ ESCRIBIR PALABRAS</button>
+    <button id="btn-modo-imagen" class="boton-grande boton-secundario">🖼️ ELEGIR LA IMAGEN</button>
+  </div>
+  <button id="btn-cambiar-dificultad" class="link-chico">CAMBIAR DIFICULTAD</button>
+</main>
+
+<!-- PANTALLA DE JUEGO: ESCRIBIR -->
+<main id="pantalla-juego" class="pantalla" hidden>
+  <div class="barra-superior">
+    <button class="boton-home" id="btn-home-juego" aria-label="Volver al menú">🏠</button>
+    <div class="progreso-estrellas" id="progreso-estrellas"></div>
+    <div class="intentos" id="intentos"></div>
+  </div>
+
+  <div class="emoji-palabra" id="emoji-palabra">🌟</div>
+
+  <button id="btn-escuchar" class="boton-escuchar" aria-label="Escuchar palabra">🔊</button>
+
+  <div class="casillas" id="casillas"></div>
+
+  <div class="teclado" id="teclado"></div>
+</main>
+
+<!-- PANTALLA DE JUEGO: ELEGIR LA IMAGEN -->
+<main id="pantalla-imagenes" class="pantalla" hidden>
+  <div class="barra-superior">
+    <button class="boton-home" id="btn-home-imagen" aria-label="Volver al menú">🏠</button>
+    <div class="progreso-estrellas" id="progreso-estrellas-img"></div>
+  </div>
+
+  <p class="palabra-grande" id="palabra-grande"></p>
+
+  <button id="btn-escuchar-img" class="boton-escuchar" aria-label="Escuchar palabra">🔊</button>
+
+  <div class="opciones-imagen" id="opciones-imagen"></div>
+</main>
+
+<!-- PANTALLA FINAL -->
+<main id="pantalla-final" class="pantalla" hidden>
+  <div class="trofeo">🏆</div>
+  <h1 class="titulo-final" id="titulo-final">¡LO LOGRASTE!</h1>
+  <p class="subtitulo">TERMINASTE TODAS LAS PALABRAS</p>
+  <button id="btn-jugar-de-nuevo" class="boton-grande boton-primario">JUGAR DE NUEVO</button>
+</main>
+
+<script src="script.js" defer></script>
+</body>
+</html>
