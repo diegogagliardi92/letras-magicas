@@ -200,9 +200,8 @@ const btnHomeJuego = document.getElementById("btn-home-juego");
 const btnHomeImagen = document.getElementById("btn-home-imagen");
 const btnJugarDeNuevo = document.getElementById("btn-jugar-de-nuevo");
 const btnEscuchar = document.getElementById("btn-escuchar");
-const btnEscucharImg = document.getElementById("btn-escuchar-img");
 const emojiPalabra = document.getElementById("emoji-palabra");
-const palabraGrandeEl = document.getElementById("palabra-grande");
+const silabasPalabraEl = document.getElementById("silabas-palabra");
 const casillasEl = document.getElementById("casillas");
 const tecladoEl = document.getElementById("teclado");
 const opcionesImagenEl = document.getElementById("opciones-imagen");
@@ -316,6 +315,99 @@ function iniciarSesion() {
   RONDAS = mazoEscribir;
 
   PALABRAS_IMAGEN = mezclar(tier.filter((p) => !p.soloEscribir));
+}
+
+// ---------- SILABIZADOR (para el modo "Elegí la imagen") ----------
+const VOCALES = "AEIOU";
+const VOCALES_FUERTES = "AEO";
+const DIGRAFOS_INSEPARABLES = ["CH", "LL", "RR", "QU", "GU"];
+const GRUPOS_CONSONANTICOS = ["PR", "PL", "BR", "BL", "TR", "DR", "CR", "CL", "FR", "FL", "GR", "GL"];
+
+function partirVocales(grupo) {
+  const nucleos = [];
+  let actual = grupo[0];
+  for (let i = 1; i < grupo.length; i++) {
+    const anterior = actual[actual.length - 1];
+    const siguiente = grupo[i];
+    if (VOCALES_FUERTES.includes(anterior) && VOCALES_FUERTES.includes(siguiente)) {
+      nucleos.push(actual);
+      actual = siguiente;
+    } else {
+      actual += siguiente;
+    }
+  }
+  nucleos.push(actual);
+  return nucleos;
+}
+
+function repartirConsonantes(grupo) {
+  if (grupo.length === 0) return ["", ""];
+  if (grupo.length === 1) return ["", grupo];
+  if (grupo.length === 2) {
+    if (DIGRAFOS_INSEPARABLES.includes(grupo) || GRUPOS_CONSONANTICOS.includes(grupo)) return ["", grupo];
+    return [grupo[0], grupo[1]];
+  }
+  if (grupo.length === 3) {
+    const resto = grupo.slice(1);
+    if (DIGRAFOS_INSEPARABLES.includes(resto) || GRUPOS_CONSONANTICOS.includes(resto)) {
+      return [grupo[0], resto];
+    }
+    return [grupo[0] + resto[0], resto[1]];
+  }
+  const ultimasDos = grupo.slice(-2);
+  if (DIGRAFOS_INSEPARABLES.includes(ultimasDos) || GRUPOS_CONSONANTICOS.includes(ultimasDos)) {
+    return [grupo.slice(0, -2), ultimasDos];
+  }
+  return [grupo.slice(0, -1), grupo.slice(-1)];
+}
+
+function silabizar(palabra) {
+  const letras = [...palabra];
+  const grupos = [];
+  let i = 0;
+  while (i < letras.length) {
+    const esVocal = VOCALES.includes(letras[i]);
+    let j = i;
+    let texto = "";
+    while (j < letras.length && VOCALES.includes(letras[j]) === esVocal) {
+      texto += letras[j];
+      j++;
+    }
+    grupos.push({ vocal: esVocal, texto });
+    i = j;
+  }
+
+  const segmentos = [];
+  grupos.forEach((grupo) => {
+    if (grupo.vocal) {
+      partirVocales(grupo.texto).forEach((nucleo, idx) => {
+        if (idx > 0) segmentos.push({ vocal: false, texto: "" });
+        segmentos.push({ vocal: true, texto: nucleo });
+      });
+    } else {
+      segmentos.push(grupo);
+    }
+  });
+
+  const silabas = [];
+  let actual = "";
+  segmentos.forEach((segmento, indice) => {
+    if (segmento.vocal) {
+      actual += segmento.texto;
+      return;
+    }
+    const esBorde = indice === 0 || indice === segmentos.length - 1;
+    if (esBorde) {
+      actual += segmento.texto;
+      return;
+    }
+    const [coda, ataque] = repartirConsonantes(segmento.texto);
+    actual += coda;
+    silabas.push(actual);
+    actual = ataque;
+  });
+  silabas.push(actual);
+  return silabas.filter((s) => s.length > 0);
 }
 
 // ---------- UTILIDADES ----------
@@ -513,13 +605,26 @@ function iniciarRondaImagen(indice) {
   rondaImagenActual = indice;
 
   const ronda = PALABRAS_IMAGEN[rondaImagenActual];
-  palabraGrandeEl.textContent = ronda.palabra;
-  palabraGrandeEl.style.animation = "none";
-  void palabraGrandeEl.offsetWidth;
-  palabraGrandeEl.style.animation = "";
-
+  renderizarSilabas(ronda);
   renderizarProgresoImg();
   renderizarOpcionesImagen(ronda);
+}
+
+function renderizarSilabas(ronda) {
+  silabasPalabraEl.innerHTML = "";
+  silabizar(ronda.palabra).forEach((silaba) => {
+    const btn = document.createElement("button");
+    btn.className = "silaba-boton";
+    btn.type = "button";
+    btn.textContent = silaba;
+    btn.setAttribute("aria-label", `Escuchar ${silaba}`);
+    btn.addEventListener("click", () => {
+      hablar(silaba, { rate: 0.7 });
+      btn.classList.add("sonando");
+      setTimeout(() => btn.classList.remove("sonando"), 300);
+    });
+    silabasPalabraEl.appendChild(btn);
+  });
 }
 
 function renderizarProgresoImg() {
@@ -653,10 +758,6 @@ btnJugarDeNuevo.addEventListener("click", () => {
 
 btnEscuchar.addEventListener("click", () => {
   hablar(RONDAS[rondaActual].palabra);
-});
-
-btnEscucharImg.addEventListener("click", () => {
-  hablar(PALABRAS_IMAGEN[rondaImagenActual].palabra);
 });
 
 inputNombre.addEventListener("input", () => {

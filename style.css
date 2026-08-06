@@ -360,14 +360,36 @@ body {
 
 /* ---------- MODO "ELEGÍ LA IMAGEN" ---------- */
 
-.palabra-grande {
-  font-size: clamp(2.6rem, 11vw, 4.5rem);
+.silabas-palabra {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 0.5rem;
+  max-width: 95vw;
+}
+
+.silaba-boton {
+  font-family: inherit;
+  font-size: clamp(1.8rem, 8vw, 3rem);
   font-weight: 800;
-  color: var(--morado);
-  text-shadow: 3px 3px 0 #fff, 5px 5px 0 var(--sombra);
-  margin: 0;
-  letter-spacing: 2px;
+  padding: 0.3rem 0.9rem;
+  border-radius: 20px;
+  border: none;
+  background: var(--amarillo);
+  color: var(--texto);
+  box-shadow: 0 5px 0 var(--sombra);
+  cursor: pointer;
+  letter-spacing: 1px;
   animation: aparecer 0.4s ease;
+  transition: transform 0.08s ease, box-shadow 0.08s ease;
+}
+
+.silaba-boton:nth-child(even) { background: var(--celeste); }
+
+.silaba-boton:active,
+.silaba-boton.sonando {
+  transform: translateY(4px) scale(0.95);
+  box-shadow: 0 1px 0 var(--sombra);
 }
 
 .opciones-imagen {
