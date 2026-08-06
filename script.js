@@ -72,7 +72,7 @@ const PALABRAS_MEDIO = [
   { palabra: "NARIZ", emoji: "👃" },
   { palabra: "POLLO", emoji: "🐥" },
   { palabra: "LLAVE", emoji: "🔑" },
-  { palabra: "PIÑA", emoji: "🍍" },
+  { palabra: "LIMON", emoji: "🍋" },
   { palabra: "MAMA", emoji: "👩" },
   { palabra: "PAPA", emoji: "👨" },
   { palabra: "LAPIZ", emoji: "✏️" },
@@ -87,9 +87,9 @@ const PALABRAS_MEDIO = [
   { palabra: "CAMISA", emoji: "👔" },
   { palabra: "ZAPATO", emoji: "👟" },
   { palabra: "CONEJO", emoji: "🐰" },
-  { palabra: "PIÑATA", emoji: "🪅" },
-  { palabra: "NIÑO", emoji: "👦" },
-  { palabra: "NIÑA", emoji: "👧" },
+  { palabra: "PAYASO", emoji: "🤡" },
+  { palabra: "COMETA", emoji: "🪁" },
+  { palabra: "CAMION", emoji: "🚛" },
   { palabra: "ESTUFA", emoji: "🔥" },
   { palabra: "TIJERA", emoji: "✂️" },
   { palabra: "PELOTA", emoji: "⚽" },
@@ -110,7 +110,7 @@ const PALABRAS_MEDIO = [
 const PALABRAS_DIFICIL = [
   { palabra: "ESTRELLA", emoji: "⭐" },
   { palabra: "TORTUGA", emoji: "🐢" },
-  { palabra: "MONTAÑA", emoji: "⛰️" },
+  { palabra: "PANTERA", emoji: "🐆" },
   { palabra: "ELEFANTE", emoji: "🐘" },
   { palabra: "MARIPOSA", emoji: "🦋" },
   { palabra: "CANGREJO", emoji: "🦀" },
@@ -162,7 +162,7 @@ const ETIQUETAS_DIFICULTAD = { facil: "🌱 FACIL", medio: "🌟 MEDIO", dificil
 
 const CLAVE_NOMBRE = "juego-lectoescritura-nombre";
 const ELOGIOS = ["¡MUY BIEN!", "¡GENIAL!", "¡EXCELENTE!", "¡LO LOGRASTE!", "¡BARBARO!", "¡PERFECTO!"];
-const POOL_DISTRACTORAS = "BCDFGHJKLMNPQRSTVXYZÑ".split("");
+const POOL_DISTRACTORAS = "BCDFGHJKLMNPQRSTVXYZ".split("");
 const INTENTOS_POR_RONDA = 3;
 
 // ---------- ESTADO ----------
@@ -284,9 +284,9 @@ function sanitizarNombre(bruto) {
   return (bruto || "")
     .toUpperCase()
     .split("")
-    .map((c) => (c === "Ñ" ? c : c.normalize("NFD").replace(/\p{Mn}/gu, "")))
+    .map((c) => c.normalize("NFD").replace(/\p{Mn}/gu, ""))
     .join("")
-    .replace(/[^A-ZÑ]/g, "")
+    .replace(/[^A-Z]/g, "")
     .slice(0, 12);
 }
 
