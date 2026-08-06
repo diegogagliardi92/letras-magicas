@@ -48,7 +48,7 @@ const PALABRAS_FACIL = [
   { palabra: "TORO", emoji: "🐂" },
   { palabra: "ROPA", emoji: "👕" },
   { palabra: "BOTA", emoji: "👢" },
-  { palabra: "PIÑA", emoji: "🍍" },
+  { palabra: "PAVO", emoji: "🦃" },
   { palabra: "SOPA", emoji: "🍲" },
   { palabra: "RAMA", emoji: "🌿" },
   { palabra: "ROJO", emoji: "🔴" },
