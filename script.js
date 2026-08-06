@@ -58,8 +58,8 @@ const PALABRAS_FACIL = [
 const PALABRAS_MEDIO = [
   { palabra: "ABEJA", emoji: "🐝" },
   { palabra: "PERRO", emoji: "🐶" },
-  { palabra: "ÁRBOL", emoji: "🌳" },
-  { palabra: "RATÓN", emoji: "🐭" },
+  { palabra: "ARBOL", emoji: "🌳" },
+  { palabra: "RATON", emoji: "🐭" },
   { palabra: "TIGRE", emoji: "🐯" },
   { palabra: "CIELO", emoji: "🌤️" },
   { palabra: "NIEVE", emoji: "❄️" },
@@ -73,16 +73,16 @@ const PALABRAS_MEDIO = [
   { palabra: "POLLO", emoji: "🐥" },
   { palabra: "LLAVE", emoji: "🔑" },
   { palabra: "PIÑA", emoji: "🍍" },
-  { palabra: "MAMÁ", emoji: "👩" },
-  { palabra: "PAPÁ", emoji: "👨" },
-  { palabra: "LÁPIZ", emoji: "✏️" },
+  { palabra: "MAMA", emoji: "👩" },
+  { palabra: "PAPA", emoji: "👨" },
+  { palabra: "LAPIZ", emoji: "✏️" },
   { palabra: "RELOJ", emoji: "⌚" },
   { palabra: "CABRA", emoji: "🐐" },
   { palabra: "PLATO", emoji: "🍽️" },
   { palabra: "VERDE", emoji: "🟢" },
-  { palabra: "AVIÓN", emoji: "✈️" },
-  { palabra: "JAMÓN", emoji: "🍖" },
-  { palabra: "BOTÓN", emoji: "🔘" },
+  { palabra: "AVION", emoji: "✈️" },
+  { palabra: "JAMON", emoji: "🍖" },
+  { palabra: "BOTON", emoji: "🔘" },
   { palabra: "TAMBOR", emoji: "🥁" },
   { palabra: "CAMISA", emoji: "👔" },
   { palabra: "ZAPATO", emoji: "👟" },
@@ -103,7 +103,7 @@ const PALABRAS_MEDIO = [
   { palabra: "COHETE", emoji: "🚀" },
   { palabra: "PULPO", emoji: "🐙" },
   { palabra: "JIRAFA", emoji: "🦒" },
-  { palabra: "DELFÍN", emoji: "🐬" },
+  { palabra: "DELFIN", emoji: "🐬" },
   { palabra: "ERIZO", emoji: "🦔" },
 ];
 
@@ -131,37 +131,37 @@ const PALABRAS_DIFICIL = [
   { palabra: "CEBOLLA", emoji: "🧅" },
   { palabra: "CANGURO", emoji: "🦘" },
   { palabra: "ZANAHORIA", emoji: "🥕" },
-  { palabra: "SANDÍA", emoji: "🍉" },
+  { palabra: "SANDIA", emoji: "🍉" },
   { palabra: "ALMOHADA", emoji: "🛏️" },
   { palabra: "DINOSAURIO", emoji: "🦖" },
-  { palabra: "MURCIÉLAGO", emoji: "🦇" },
-  { palabra: "PINGÜINO", emoji: "🐧" },
+  { palabra: "MURCIELAGO", emoji: "🦇" },
+  { palabra: "PINGUINO", emoji: "🐧" },
   { palabra: "HORMIGA", emoji: "🐜" },
   { palabra: "RINOCERONTE", emoji: "🦏" },
-  { palabra: "HIPOPÓTAMO", emoji: "🦛" },
+  { palabra: "HIPOPOTAMO", emoji: "🦛" },
   { palabra: "GIRASOL", emoji: "🌻" },
   { palabra: "ARDILLA", emoji: "🐿️" },
   { palabra: "LAGARTIJA", emoji: "🦎" },
-  { palabra: "ESCORPIÓN", emoji: "🦂" },
+  { palabra: "ESCORPION", emoji: "🦂" },
   { palabra: "CARACOL", emoji: "🐌" },
   { palabra: "BALLENA", emoji: "🐋" },
-  { palabra: "TIBURÓN", emoji: "🦈" },
+  { palabra: "TIBURON", emoji: "🦈" },
   { palabra: "LANGOSTA", emoji: "🦞" },
   { palabra: "CALAMAR", emoji: "🦑" },
   { palabra: "FLAMENCO", emoji: "🦩" },
   { palabra: "PELUCHE", emoji: "🧸" },
   { palabra: "CUADERNO", emoji: "📓" },
-  { palabra: "SEMÁFORO", emoji: "🚦" },
-  { palabra: "HELICÓPTERO", emoji: "🚁" },
+  { palabra: "SEMAFORO", emoji: "🚦" },
+  { palabra: "HELICOPTERO", emoji: "🚁" },
   { palabra: "AEROPUERTO", emoji: "✈️" },
 ];
 
 const TIERS = { facil: PALABRAS_FACIL, medio: PALABRAS_MEDIO, dificil: PALABRAS_DIFICIL };
 const DISTRACTORES_POR_DIFICULTAD = { facil: 1, medio: 2, dificil: 3 };
-const ETIQUETAS_DIFICULTAD = { facil: "🌱 FÁCIL", medio: "🌟 MEDIO", dificil: "🔥 DIFÍCIL" };
+const ETIQUETAS_DIFICULTAD = { facil: "🌱 FACIL", medio: "🌟 MEDIO", dificil: "🔥 DIFICIL" };
 
 const CLAVE_NOMBRE = "juego-lectoescritura-nombre";
-const ELOGIOS = ["¡MUY BIEN!", "¡GENIAL!", "¡EXCELENTE!", "¡LO LOGRASTE!", "¡BÁRBARO!", "¡PERFECTO!"];
+const ELOGIOS = ["¡MUY BIEN!", "¡GENIAL!", "¡EXCELENTE!", "¡LO LOGRASTE!", "¡BARBARO!", "¡PERFECTO!"];
 const POOL_DISTRACTORAS = "BCDFGHJKLMNPQRSTVXYZÑ".split("");
 const INTENTOS_POR_RONDA = 3;
 
@@ -283,8 +283,10 @@ function sonidoFanfarria() {
 function sanitizarNombre(bruto) {
   return (bruto || "")
     .toUpperCase()
-    .normalize("NFC")
-    .replace(/[^A-ZÑÁÉÍÓÚÜ]/g, "")
+    .split("")
+    .map((c) => (c === "Ñ" ? c : c.normalize("NFD").replace(/\p{Mn}/gu, "")))
+    .join("")
+    .replace(/[^A-ZÑ]/g, "")
     .slice(0, 12);
 }
 
